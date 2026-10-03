@@ -109,8 +109,7 @@ footer{text-align:center;margin-top:34px;padding:24px 10px 8px;border-top:1px so
 <div>© الثانوية السادسة والعشرون بتبوك – البوابة الرقمية الموحدة</div>
 <div style="margin-top:7px;font-weight:700;color:#58717b">إعداد وبرمجة / أ. دينا الشيخ</div>
 <div style="margin-top:5px;font-weight:700;color:#58717b">مديرة المدرسة / أ. أماني آل عبشان</div>
-<div class="visitor">👁️ زيارات هذا الجهاز: <strong id="visits">1</strong></div>
-<div class="note">سيتم تحويل العداد إلى عدد زوار عام للبوابة بعد نشرها وربطها بخدمة عدّاد إلكترونية.</div>
+<div class="visitor">👁️ إجمالي زيارات البوابة: <strong id="visits">...</strong></div>
 </footer>
 </main>
 
@@ -135,9 +134,16 @@ cards.forEach(c=>{
    window.open(url,'_blank','noopener');
  });
 });
-let v=Number(localStorage.getItem('school26PortalVisits')||0)+1;
-localStorage.setItem('school26PortalVisits',String(v));
-document.getElementById('visits').textContent=v.toLocaleString('ar-SA');
+fetch('https://school26-visitor-counter.whitetulip1433.workers.dev/')
+  .then(response => response.json())
+  .then(result => {
+    const count = result.data.up_count;
+    document.getElementById('visits').textContent =
+      count.toLocaleString('ar-SA');
+  })
+  .catch(() => {
+    document.getElementById('visits').textContent = '—';
+  });
 </script>
 </body>
 </html>
